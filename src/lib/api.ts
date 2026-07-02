@@ -44,8 +44,12 @@ async function request<T>(
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
-  if (res.status === 401) {
-    // Token invalid/expired — drop it and return to login.
+  const isLoginRequest = path.includes('/auth/login');
+
+  // A 401 on an *authenticated* request means the session expired — drop the
+  // token and bounce to login. A 401 on the login request itself is just bad
+  // credentials, so let it fall through to normal error parsing below.
+  if (res.status === 401 && token && !isLoginRequest) {
     clearToken();
     if (!location.pathname.endsWith('/admin/login')) {
       location.href = '/admin/login';
