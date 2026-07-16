@@ -12,6 +12,7 @@ const pageTitles: Record<string, { title: string; subtitle?: string }> = {
   '/admin/monitoring': { title: 'Platform Monitoring', subtitle: 'Backend dependency health and RPC status.' },
   '/admin/users': { title: 'Admin Users', subtitle: 'Manage admin access and roles.' },
   '/admin/transactions': { title: 'Transactions', subtitle: 'Global swap and transaction activity across chains.' },
+  '/admin/platform-fee': { title: 'Platform Fee', subtitle: 'Configure the swap fee and the wallet that collects it.' },
 };
 
 export default function AdminShell() {

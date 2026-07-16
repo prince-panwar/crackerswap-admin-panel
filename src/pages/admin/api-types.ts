@@ -10,9 +10,22 @@ export interface AuthedAdmin {
   isSeeded: boolean;
 }
 
-export interface LoginResponse {
+/** Returned by /admin/auth/login and /admin/auth/refresh. The refresh token is
+ *  set as an httpOnly cookie and is intentionally NOT part of this body. */
+export interface SessionResponse {
   accessToken: string;
+  csrfToken: string;
   admin: AuthedAdmin;
+}
+
+/** @deprecated use SessionResponse */
+export type LoginResponse = SessionResponse;
+
+/** Platform swap-fee configuration (GET/PUT /admin/platform/fee). */
+export interface PlatformFeeConfig {
+  enabled: boolean;
+  feeBps: number;
+  feeRecipient: string | null;
 }
 
 export interface AdminUserResponse {

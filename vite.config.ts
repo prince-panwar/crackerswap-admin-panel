@@ -71,7 +71,9 @@ export default defineConfig({
   ],
   base,
   build: {
-    sourcemap: true,
+    // Never ship readable source maps to production — they expose the full
+    // frontend source. Keep them for local/preview builds only.
+    sourcemap: isPreview,
     outDir: 'out',
   },
   resolve: {
@@ -81,6 +83,8 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: "0.0.0.0",
+    // Bind to localhost by default; set VITE_DEV_HOST=0.0.0.0 to expose the dev
+    // server on the LAN when you explicitly need to.
+    host: process.env.VITE_DEV_HOST || "localhost",
   },
 });

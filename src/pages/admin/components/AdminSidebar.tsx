@@ -17,6 +17,7 @@ const sidebarItems: SidebarItem[] = [
   { id: 'monitoring', label: 'Platform Monitoring', path: '/admin/monitoring', icon: 'ri-pulse-line', permission: 'monitoring' },
   { id: 'users', label: 'Admin Users', path: '/admin/users', icon: 'ri-user-settings-line', permission: 'users-roles' },
   { id: 'transactions', label: 'Transactions', path: '/admin/transactions', icon: 'ri-exchange-line', permission: 'transactions' },
+  { id: 'platform-fee', label: 'Platform Fee', path: '/admin/platform-fee', icon: 'ri-percent-line', permission: 'platform-fee' },
   // NO API: Token Queue (ingestion approval) and Settings removed from nav.
   // { id: 'token-queue', label: 'Token Queue', path: '/admin/token-queue', icon: 'ri-inbox-line', permission: 'token-moderation' },
   // { id: 'settings', label: 'Settings', path: '/admin/settings', icon: 'ri-settings-3-line', permission: 'settings' },

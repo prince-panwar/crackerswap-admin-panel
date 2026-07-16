@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { api } from '@/lib/api';
 import type { Token } from '@/mocks/swapTokens';
 import { swapTokens, baseTokens, monadTokens } from '@/mocks/swapTokens';
 import ChainSelector from './ChainSelector';
@@ -50,6 +51,27 @@ export default function SwapCard({ walletAddress, onConnectWallet, onDisconnectW
   const [expertMode, setExpertMode] = useState(false);
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
+  // Real platform-fee config from the backend (public endpoint). Drives the
+  // "Platform Fee" line below instead of a hardcoded rate.
+  const [feeConfig, setFeeConfig] = useState<{ enabled: boolean; feeBps: number }>({
+    enabled: false,
+    feeBps: 0,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get<{ enabled: boolean; feeBps: number }>('/platform/fee')
+      .then((cfg) => {
+        if (!cancelled) setFeeConfig(cfg);
+      })
+      .catch(() => {
+        // Non-fatal: leave the fee display at zero if the config can't load.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [txStatus, setTxStatus] = useState<TransactionStatus | null>(null);
   const [connectOpen, setConnectOpen] = useState(false);
@@ -111,9 +133,9 @@ export default function SwapCard({ walletAddress, onConnectWallet, onDisconnectW
 
   const platformFee = useMemo(() => {
     const amount = parseFloat(payAmount);
-    if (!payToken || isNaN(amount) || amount <= 0) return 0;
-    return (amount * payToken.price * 0.001).toFixed(2);
-  }, [payAmount, payToken]);
+    if (!payToken || isNaN(amount) || amount <= 0 || !feeConfig.enabled) return 0;
+    return (amount * payToken.price * (feeConfig.feeBps / 10000)).toFixed(2);
+  }, [payAmount, payToken, feeConfig]);
 
   const minimumReceived = useMemo(() => {
     const rAmount = parseFloat(receiveAmount);
@@ -720,8 +742,12 @@ export default function SwapCard({ walletAddress, onConnectWallet, onDisconnectW
                     <span className="text-[#D8D1E6] font-medium">{networkFee ? `$${networkFee}` : '—'}</span>
                   </div>
                   <div className="flex items-center justify-between text-[13px]">
-                    <span className="text-[#A69DB7]">Platform Fee</span>
-                    <span className="text-[#D8D1E6] font-medium">{platformFee ? `$${platformFee}` : '—'}</span>
+                    <span className="text-[#A69DB7]">
+                      Platform Fee{feeConfig.enabled ? ` (${feeConfig.feeBps / 100}%)` : ''}
+                    </span>
+                    <span className="text-[#D8D1E6] font-medium">
+                      {feeConfig.enabled && platformFee ? `$${platformFee}` : '—'}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-[13px]">
                     <span className="text-[#A69DB7]">Expected Output</span>

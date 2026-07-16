@@ -5,40 +5,47 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { api, clearToken, getToken, setToken } from '@/lib/api';
-import type { AuthedAdmin, LoginResponse } from '@/pages/admin/api-types';
+import {
+  api,
+  hasSession,
+  login as apiLogin,
+  logout as apiLogout,
+  refreshSession,
+} from '@/lib/api';
+import type { AuthedAdmin } from '@/pages/admin/api-types';
 
 interface AuthState {
   admin: AuthedAdmin | null;
-  loading: boolean; // true while bootstrapping the session from a stored token
+  loading: boolean; // true while restoring the session on load
   isSuperAdmin: boolean;
   login: (email: string, password: string) => Promise<AuthedAdmin>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [admin, setAdmin] = useState<AuthedAdmin | null>(null);
-  const [loading, setLoading] = useState<boolean>(!!getToken());
+  // The access token lives only in memory, so on every load we must attempt a
+  // silent refresh before we know whether there's a session.
+  const [loading, setLoading] = useState<boolean>(hasSession());
 
-  // Validate a stored token on mount by loading the current admin.
   useEffect(() => {
     let cancelled = false;
-    if (!getToken()) {
+    if (!hasSession()) {
       setLoading(false);
       return;
     }
-    api
-      .get<AuthedAdmin>('/admin/auth/me')
+    refreshSession()
+      .then((ok) => {
+        if (!ok) return null;
+        return api.get<AuthedAdmin>('/admin/auth/me');
+      })
       .then((me) => {
-        if (!cancelled) setAdmin(me);
+        if (!cancelled) setAdmin(me ?? null);
       })
       .catch(() => {
-        if (!cancelled) {
-          clearToken();
-          setAdmin(null);
-        }
+        if (!cancelled) setAdmin(null);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -49,17 +56,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await api.post<LoginResponse>('/admin/auth/login', {
-      email,
-      password,
-    });
-    setToken(res.accessToken);
-    setAdmin(res.admin);
-    return res.admin;
+    const session = await apiLogin(email, password);
+    setAdmin(session.admin);
+    return session.admin;
   }, []);
 
-  const logout = useCallback(() => {
-    clearToken();
+  const logout = useCallback(async () => {
+    await apiLogout();
     setAdmin(null);
     window.location.href = '/admin/login';
   }, []);

@@ -10,6 +10,8 @@ const ROLE_PERMISSIONS: Record<AdminRole, string[]> = {
     'monitoring',
     'users-roles',
     'transactions',
+    // Platform fee config is super-admin only (backend enforces this too).
+    'platform-fee',
   ],
   // Regular admins can do everything except manage other admins.
   admin: [

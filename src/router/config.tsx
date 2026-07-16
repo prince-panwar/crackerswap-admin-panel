@@ -16,6 +16,7 @@ import FeaturedTokensPage from "../pages/admin/featured";
 import PlatformMonitoringPage from "../pages/admin/monitoring";
 import AdminUsersPage from "../pages/admin/users";
 import TransactionsPage from "../pages/admin/audit-logs";
+import PlatformFeePage from "../pages/admin/platform-fee";
 // NO API: token-queue (ingestion approval workflow) and settings have no
 // backend endpoint, so their routes are disabled.
 // import TokenIngestionQueue from "../pages/admin/token-queue";
@@ -76,6 +77,7 @@ const routes: RouteObject[] = [
       // Audit Logs has no backend; the page is repurposed as the
       // Transactions feed (GET /admin/transactions).
       { path: "transactions", element: <TransactionsPage /> },
+      { path: "platform-fee", element: <PlatformFeePage /> },
       // NO API: token-queue and settings routes disabled.
       // { path: "token-queue", element: <TokenIngestionQueue /> },
       // { path: "settings", element: <AdminSettingsPage /> },
