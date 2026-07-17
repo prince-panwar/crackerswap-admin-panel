@@ -71,28 +71,28 @@ export default function PlatformFeePage() {
 
   return (
     <div className="max-w-2xl space-y-5">
-      <div className="rounded-2xl bg-[#0F0D1A] border border-[#1A1A2E]/60 overflow-hidden">
-        <div className="px-5 py-4 border-b border-[#1A1A2E]/40">
-          <h3 className="text-sm font-semibold text-[#F6F2EA]">Swap Platform Fee</h3>
-          <p className="text-xs text-[#8B8FA3] mt-1">
+      <div className="glass-card rounded-2xl overflow-hidden">
+        <div className="relative px-5 py-4 border-b border-card-border">
+          <h3 className="text-sm font-semibold text-fg">Swap Platform Fee</h3>
+          <p className="text-xs text-fg-tertiary mt-1">
             When enabled, this fee is deducted from the input token of every swap
             and sent to the fee wallet. The remainder is swapped.
           </p>
         </div>
 
-        <div className="p-5 space-y-5">
+        <div className="relative p-5 space-y-5">
           {/* Enable toggle */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-[#F6F2EA]">Fee enabled</p>
-              <p className="text-xs text-[#8B8FA3] mt-0.5">
+              <p className="text-sm font-medium text-fg">Fee enabled</p>
+              <p className="text-xs text-fg-tertiary mt-0.5">
                 Turn the platform fee on or off for all swaps.
               </p>
             </div>
             <button
               onClick={() => setEnabled((v) => !v)}
               className={`relative w-11 h-6 rounded-full transition-all cursor-pointer ${
-                enabled ? 'bg-[#34D07F]' : 'bg-[#2A2A3E]'
+                enabled ? 'bg-success' : 'bg-surface-strong'
               }`}
             >
               <span
@@ -105,7 +105,7 @@ export default function PlatformFeePage() {
 
           {/* Fee percent */}
           <div>
-            <label className="block text-xs font-semibold text-[#D8D1E6] mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary mb-1.5">
               Fee (%)
             </label>
             <input
@@ -116,19 +116,21 @@ export default function PlatformFeePage() {
               value={feePercent}
               onChange={(e) => setFeePercent(e.target.value)}
               placeholder="0.30"
-              className="w-full px-4 py-3 rounded-xl bg-[#0A0618] border border-[#1A1A2E] text-sm text-[#F6F2EA] placeholder-[#6E667E] outline-none focus:border-[#6C4DFF]/30"
+              className={`w-full px-4 py-3 rounded-xl bg-surface text-sm text-fg placeholder-fg-subtle outline-none transition-all focus:ring-2 focus:ring-accent-soft ${
+                pctValid ? 'border border-card-border focus:border-accent' : 'border border-danger'
+              }`}
             />
-            <p className="text-[11px] text-[#6E667E] mt-1.5">
+            <p className="text-[11px] text-fg-subtle mt-1.5">
               Max {MAX_FEE_PERCENT}%. Stored as {isNaN(pct) ? 0 : Math.round(pct * 100)} bps.
               {!pctValid && (
-                <span className="text-[#FF5B5B]"> · must be 0–{MAX_FEE_PERCENT}%</span>
+                <span className="text-danger"> · must be 0–{MAX_FEE_PERCENT}%</span>
               )}
             </p>
           </div>
 
           {/* Fee recipient */}
           <div>
-            <label className="block text-xs font-semibold text-[#D8D1E6] mb-1.5">
+            <label className="block text-xs font-semibold text-fg-secondary mb-1.5">
               Fee wallet address
             </label>
             <input
@@ -136,15 +138,19 @@ export default function PlatformFeePage() {
               value={feeRecipient}
               onChange={(e) => setFeeRecipient(e.target.value)}
               placeholder="0x..."
-              className="w-full px-4 py-3 rounded-xl bg-[#0A0618] border border-[#1A1A2E] text-sm text-[#F6F2EA] placeholder-[#6E667E] outline-none focus:border-[#6C4DFF]/30 font-mono"
+              className={`w-full px-4 py-3 rounded-xl bg-surface text-sm text-fg placeholder-fg-subtle outline-none transition-all focus:ring-2 focus:ring-accent-soft font-mono ${
+                feeRecipient.trim() !== '' && !recipientValid
+                  ? 'border border-danger'
+                  : 'border border-card-border focus:border-accent'
+              }`}
             />
             {feeRecipient.trim() !== '' && !recipientValid && (
-              <p className="text-[11px] text-[#FF5B5B] mt-1.5">
+              <p className="text-[11px] text-danger mt-1.5">
                 Enter a valid 0x-prefixed EVM address.
               </p>
             )}
             {enabled && feeRecipient.trim() === '' && (
-              <p className="text-[11px] text-[#FF7A22] mt-1.5">
+              <p className="text-[11px] text-warning mt-1.5">
                 A fee wallet is required while the fee is enabled.
               </p>
             )}
@@ -154,14 +160,15 @@ export default function PlatformFeePage() {
             <button
               onClick={save}
               disabled={!canSave}
-              className="px-6 py-3 rounded-full bg-[#6C4DFF]/10 border border-[#6C4DFF]/20 text-[#7B61FF] text-sm font-semibold hover:bg-[#6C4DFF]/20 transition-all cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundImage: 'var(--grad-brand)' }}
+              className="px-6 py-3 rounded-full text-white text-sm font-semibold shadow-[0_0_20px_var(--accent-soft)] hover:brightness-110 transition-all cursor-pointer whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving...' : 'Save changes'}
             </button>
             <button
               onClick={load}
               disabled={saving}
-              className="px-6 py-3 rounded-full bg-transparent border border-[#1A1A2E] text-[#8B8FA3] text-sm font-semibold hover:text-white transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
+              className="px-6 py-3 rounded-full bg-transparent border border-card-border text-fg-tertiary text-sm font-semibold hover:bg-surface transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
             >
               Reset
             </button>
@@ -170,9 +177,9 @@ export default function PlatformFeePage() {
       </div>
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2.5 rounded-full bg-[#0F0D1A] border border-[#1A1A2E] shadow-[0_12px_40px_rgba(0,0,0,0.5)] text-sm text-[#D8D1E6] animate-slide-down">
-          <i className="ri-checkbox-circle-line text-[#34D07F] mr-2"></i>
-          {toast}
+        <div className="glass-card fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2.5 rounded-full text-sm text-fg-secondary animate-slide-down">
+          <i className="relative ri-checkbox-circle-line text-success mr-2"></i>
+          <span className="relative">{toast}</span>
         </div>
       )}
     </div>

@@ -5,9 +5,25 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Restrict where the page may load resources from. Scripts are limited to
-         same-origin (Vite bundles are self-hosted); styles/fonts allow the two
+         same-origin (Vite bundles are self-hosted) plus the one inline
+         pre-paint theme script below, allowed by exact hash rather than
+         'unsafe-inline' so the CSP stays strict. Styles/fonts allow the two
          pinned CDNs below. Tighten connect-src to your API origin at deploy. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https: http://localhost:8000; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-T0nL3Q5OdLc/DN2SzPkI9bEPL49qW7jIKBxVkfTj1qc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https: http://localhost:8000; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+    <!-- Sets the `dark`/light class on <html> before first paint, matching
+         cracker-swap-frontend's themeBootstrapScript — without this the page
+         would flash the wrong theme while React hydrates and ThemeProvider's
+         effect runs (see src/lib/theme.tsx). Hash above must match this exact
+         script text if it's ever edited (`openssl dgst -sha256 -binary <file>
+         | openssl base64` over just the inline script's text content). -->
+    <script>
+(function(){try{
+  var s=localStorage.getItem('cracker-admin-theme');
+  var d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var t=s||(d?'dark':'light');
+  if(t==='dark')document.documentElement.classList.add('dark');
+}catch(e){document.documentElement.classList.add('dark');}})();
+    </script>
     <title>CrackerSwap — Token Discovery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

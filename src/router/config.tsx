@@ -1,12 +1,5 @@
 import { Navigate, type RouteObject } from "react-router-dom";
 import NotFound from "../pages/NotFound";
-import TokenDiscoveryPage from "../pages/discovery/page";
-import TokenDiscoveryV2Page from "../pages/discovery2/page";
-import SwapPage from "../pages/swap/page";
-import PortfolioPage from "../pages/portfolio/page";
-import PoolsPage from "../pages/pools/page";
-import PoolDetailPage from "../pages/pools/detail";
-import PositionsPage from "../pages/positions/page";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import AdminShell from "../pages/admin/page";
 import AdminLogin from "../pages/admin/login";
@@ -27,34 +20,6 @@ const routes: RouteObject[] = [
     // This build is the admin panel; send the root to the admin login.
     path: "/",
     element: <Navigate to="/admin/login" replace />,
-  },
-  {
-    path: "/discovery",
-    element: <TokenDiscoveryPage />,
-  },
-  {
-    path: "/v2",
-    element: <TokenDiscoveryV2Page />,
-  },
-  {
-    path: "/swap",
-    element: <SwapPage />,
-  },
-  {
-    path: "/pools",
-    element: <PoolsPage />,
-  },
-  {
-    path: "/pools/:poolId",
-    element: <PoolDetailPage />,
-  },
-  {
-    path: "/positions",
-    element: <PositionsPage />,
-  },
-  {
-    path: "/portfolio",
-    element: <PortfolioPage />,
   },
   {
     path: "/admin/login",

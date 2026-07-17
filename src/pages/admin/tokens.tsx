@@ -136,7 +136,7 @@ export default function TokenModerationPage() {
               key={c.id}
               onClick={() => { setChainId(c.id); setPage(1); }}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${
-                chainId === c.id ? 'bg-[#6C4DFF]/15 text-[#7B61FF] border border-[#6C4DFF]/25' : 'text-[#8B8FA3] hover:text-[#D8D1E6] border border-transparent'
+                chainId === c.id ? 'bg-cta-soft text-cta-bg-active border border-cta-soft' : 'text-fg-muted hover:text-fg-secondary border border-transparent'
               }`}
             >
               {c.name}
@@ -145,16 +145,16 @@ export default function TokenModerationPage() {
         </div>
         <div className="flex-1" />
         <div className="relative w-full sm:w-64">
-          <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-[#6E667E] text-sm"></i>
+          <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle text-sm"></i>
           <input
             type="text"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             placeholder="Search token, symbol, address..."
-            className="w-full pl-9 pr-8 py-2 rounded-full bg-[#0A0618] border border-[#1A1A2E] text-xs text-[#F6F2EA] placeholder-[#6E667E] outline-none focus:border-[#6C4DFF]/30"
+            className="w-full pl-9 pr-8 py-2 rounded-full bg-surface border border-card-border text-xs text-fg placeholder-fg-subtle outline-none backdrop-blur-md transition-colors focus:border-accent"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#6E667E] hover:text-[#D8D1E6] cursor-pointer">
+            <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-subtle hover:text-fg-secondary cursor-pointer">
               <i className="ri-close-line text-sm"></i>
             </button>
           )}
@@ -167,25 +167,25 @@ export default function TokenModerationPage() {
       {!loading && !error && data && (
         <>
           {/* Table */}
-          <div className="rounded-2xl bg-[#0F0D1A] border border-[#1A1A2E]/60 overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="glass-card rounded-2xl overflow-hidden">
+            <div className="relative overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[#1A1A2E]/40">
-                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E667E] uppercase tracking-wider">Token</th>
-                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E667E] uppercase tracking-wider hidden md:table-cell">Chain</th>
-                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E667E] uppercase tracking-wider hidden lg:table-cell">Contract</th>
+                  <tr className="border-b border-card-border">
+                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-fg-subtle uppercase tracking-wider">Token</th>
+                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-fg-subtle uppercase tracking-wider hidden md:table-cell">Chain</th>
+                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-fg-subtle uppercase tracking-wider hidden lg:table-cell">Contract</th>
                     {/* NO API: Liquidity / TVL / 24H Vol / Holders columns removed (not on the Token entity). */}
-                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E667E] uppercase tracking-wider">Status</th>
-                    <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#6E667E] uppercase tracking-wider">Actions</th>
+                    <th className="text-left px-4 py-3 text-[11px] font-semibold text-fg-subtle uppercase tracking-wider">Status</th>
+                    <th className="text-right px-4 py-3 text-[11px] font-semibold text-fg-subtle uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1A1A2E]/20">
+                <tbody className="divide-y divide-card-border">
                   {data.items.map((item) => (
-                    <tr key={item.id} className="hover:bg-[#1A1A2E]/20 transition-colors">
+                    <tr key={item.id} className="hover:bg-surface transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#1A1A2E] flex items-center justify-center text-xs font-bold text-[#D8D1E6] overflow-hidden">
+                          <div className="w-8 h-8 rounded-full bg-surface-inset flex items-center justify-center text-xs font-bold text-fg-secondary overflow-hidden">
                             {item.logoURI ? (
                               <img src={item.logoURI} alt={item.symbol} className="w-full h-full object-cover" />
                             ) : (
@@ -193,42 +193,42 @@ export default function TokenModerationPage() {
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-[#F6F2EA]">{item.name}</p>
-                            <p className="text-[11px] text-[#6E667E]">{item.symbol}</p>
+                            <p className="text-sm font-medium text-fg">{item.name}</p>
+                            <p className="text-[11px] text-fg-subtle">{item.symbol}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-4 py-3 hidden md:table-cell">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#6C4DFF]/10 text-[#7B61FF] border border-[#6C4DFF]/20">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-accent-soft text-accent border border-accent-soft">
                           <i className="ri-circle-fill text-[6px]" />{chainName(item.chainId)}
                         </span>
                       </td>
                       <td className="px-4 py-3 hidden lg:table-cell">
-                        <span className="text-xs text-[#6E667E] font-mono">{shortenAddress(item.address)}</span>
+                        <span className="text-xs text-fg-subtle font-mono">{shortenAddress(item.address)}</span>
                       </td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border ${
                           item.isVerified
-                            ? 'bg-[#34D07F]/10 text-[#34D07F] border-[#34D07F]/20'
-                            : 'bg-[#A69DB7]/10 text-[#A69DB7] border-[#A69DB7]/20'
+                            ? 'bg-success-soft text-success border-success-soft'
+                            : 'bg-surface-inset text-fg-tertiary border-card-border'
                         }`}>
                           {item.isVerified ? 'Verified' : 'Unverified'}
                         </span>
                         {item.isFeatured && (
-                          <span className="ml-1.5 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border bg-[#FF6A1A]/10 text-[#FF6A1A] border-[#FF6A1A]/20">
+                          <span className="ml-1.5 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium border bg-warning-soft text-warning border-warning-soft">
                             Featured
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1.5">
-                          <button onClick={() => setReviewDrawer(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-[#7B61FF] bg-[#7B61FF]/10 border border-[#7B61FF]/20 hover:bg-[#7B61FF]/20 transition-all cursor-pointer whitespace-nowrap">
+                          <button onClick={() => setReviewDrawer(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-accent bg-accent-soft border border-accent-soft hover:brightness-110 transition-all cursor-pointer whitespace-nowrap">
                             Review
                           </button>
-                          <button onClick={() => setMetadataDrawer(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-[#A69DB7] bg-[#A69DB7]/10 border border-[#A69DB7]/20 hover:bg-[#A69DB7]/20 transition-all cursor-pointer whitespace-nowrap">
+                          <button onClick={() => setMetadataDrawer(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-fg-tertiary bg-surface-inset border border-card-border hover:bg-surface transition-all cursor-pointer whitespace-nowrap">
                             Metadata
                           </button>
-                          <button onClick={() => setDeleteTarget(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-[#FF5B5B] bg-[#FF5B5B]/10 border border-[#FF5B5B]/20 hover:bg-[#FF5B5B]/20 transition-all cursor-pointer whitespace-nowrap">
+                          <button onClick={() => setDeleteTarget(item)} className="px-2 py-1.5 rounded-lg text-[10px] font-medium text-danger bg-danger-soft border border-danger-soft hover:brightness-110 transition-all cursor-pointer whitespace-nowrap">
                             Delete
                           </button>
                         </div>
@@ -239,30 +239,30 @@ export default function TokenModerationPage() {
               </table>
             </div>
             {data.items.length === 0 && (
-              <div className="py-16 text-center">
-                <div className="w-12 h-12 mx-auto rounded-xl bg-[#1A1A2E]/40 flex items-center justify-center">
-                  <i className="ri-search-line text-xl text-[#6E667E]"></i>
+              <div className="relative py-16 text-center">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-surface-inset flex items-center justify-center">
+                  <i className="ri-search-line text-xl text-fg-subtle"></i>
                 </div>
-                <p className="text-sm text-[#A69DB7] mt-3">No tokens match filters</p>
+                <p className="text-sm text-fg-tertiary mt-3">No tokens match filters</p>
               </div>
             )}
           </div>
 
           {/* Pagination */}
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#6E667E]">{data.total} tokens · page {page} of {totalPages}</span>
+            <span className="text-xs text-fg-subtle">{data.total} tokens · page {page} of {totalPages}</span>
             <div className="flex items-center gap-2">
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="px-3 py-1.5 rounded-full text-xs font-medium border border-[#1A1A2E] text-[#D8D1E6] disabled:opacity-40 hover:bg-[#1A1A2E]/40 transition-all cursor-pointer disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-full text-xs font-medium border border-card-border text-fg-secondary disabled:opacity-40 hover:bg-surface transition-all cursor-pointer disabled:cursor-not-allowed"
               >
                 Prev
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className="px-3 py-1.5 rounded-full text-xs font-medium border border-[#1A1A2E] text-[#D8D1E6] disabled:opacity-40 hover:bg-[#1A1A2E]/40 transition-all cursor-pointer disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-full text-xs font-medium border border-card-border text-fg-secondary disabled:opacity-40 hover:bg-surface transition-all cursor-pointer disabled:cursor-not-allowed"
               >
                 Next
               </button>
@@ -273,9 +273,9 @@ export default function TokenModerationPage() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2.5 rounded-full bg-[#0F0D1A] border border-[#1A1A2E] shadow-[0_12px_40px_rgba(0,0,0,0.5)] text-sm text-[#D8D1E6] animate-slide-down">
-          <i className="ri-checkbox-circle-line text-[#34D07F] mr-2"></i>
-          {toast}
+        <div className="glass-card fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2.5 rounded-full text-sm text-fg-secondary animate-slide-down">
+          <i className="relative ri-checkbox-circle-line text-success mr-2"></i>
+          <span className="relative">{toast}</span>
         </div>
       )}
 

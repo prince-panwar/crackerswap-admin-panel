@@ -25,7 +25,7 @@ export default function AdminShell() {
   const userPermissions = permissionsForRole(admin?.role);
 
   return (
-    <div className="min-h-screen bg-[#070214]">
+    <div className="min-h-screen bg-bg">
       <AdminSidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}

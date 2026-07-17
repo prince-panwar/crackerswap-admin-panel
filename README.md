@@ -35,6 +35,7 @@ credentials provisioned on the backend (seeded from `ADMIN_EMAIL` /
 | Platform Monitoring | `GET /admin/platform/health` |
 | Admin Users (super-admin) | `GET/POST/PATCH/DELETE /admin/users` |
 | Transactions | `GET /admin/transactions` |
+| Platform Fee | `GET/PUT /admin/platform/fee` |
 
 ## Notes
 
@@ -42,6 +43,3 @@ credentials provisioned on the backend (seeded from `ADMIN_EMAIL` /
 - UI elements without a backing API (token ingestion queue, settings, audit
   logs, granular permission matrix, token social/liquidity fields, etc.) are
   commented out with `NO API` markers rather than showing mock data.
-- The bundle also contains the standalone DEX pages (discovery, swap, pools,
-  portfolio) under their own routes; they are not part of the admin API
-  integration.

@@ -42,7 +42,7 @@ export default function AdminSidebar({ collapsed, onToggle, userRole, userPermis
       {/* Mobile overlay */}
       {!collapsed && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-overlay-backdrop z-40 lg:hidden"
           onClick={onToggle}
         />
       )}
@@ -52,15 +52,18 @@ export default function AdminSidebar({ collapsed, onToggle, userRole, userPermis
           ${collapsed ? '-translate-x-full lg:translate-x-0 lg:w-[72px]' : 'translate-x-0 w-[260px]'}
         `}
       >
-        <div className="flex-1 flex flex-col bg-[#0A0618]/95 backdrop-blur-xl border-r border-[#1A1A2E]/60">
+        <div className="flex-1 flex flex-col bg-surface-strong backdrop-blur-xl border-r border-card-border">
           {/* Logo */}
-          <div className="h-[72px] flex items-center px-5 border-b border-[#1A1A2E]/40">
+          <div className="h-[72px] flex items-center px-5 border-b border-card-border">
             <Link to="/admin/dashboard" className="flex items-center gap-2.5 cursor-pointer">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FF6A1A] to-[#FF7A22] flex items-center justify-center shadow-[0_0_12px_rgba(255,106,26,0.35)] flex-shrink-0">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center shadow-[0_0_12px_var(--accent-soft)] flex-shrink-0"
+                style={{ backgroundImage: 'var(--grad-brand)' }}
+              >
                 <i className="ri-admin-line text-white text-lg"></i>
               </div>
               {!collapsed && (
-                <span className="text-white font-semibold text-base tracking-tight whitespace-nowrap">
+                <span className="text-fg font-semibold text-base tracking-tight whitespace-nowrap">
                   CrackerSwap
                 </span>
               )}
@@ -70,14 +73,14 @@ export default function AdminSidebar({ collapsed, onToggle, userRole, userPermis
           {/* Collapse toggle on desktop */}
           <button
             onClick={onToggle}
-            className="hidden lg:flex absolute -right-3 top-[88px] w-6 h-6 rounded-full bg-[#1A1A2E] border border-[#2A2A3E] items-center justify-center text-[#8B8FA3] hover:text-white cursor-pointer z-10"
+            className="hidden lg:flex absolute -right-3 top-[88px] w-6 h-6 rounded-full bg-surface-strong border border-card-border items-center justify-center text-fg-muted hover:text-fg cursor-pointer z-10"
           >
             <i className={`text-xs ${collapsed ? 'ri-arrow-right-s-line' : 'ri-arrow-left-s-line'}`}></i>
           </button>
 
           {/* Admin label */}
           <div className={`px-5 pt-4 pb-2 ${collapsed ? 'lg:px-3' : ''}`}>
-            <span className={`text-[11px] font-semibold uppercase tracking-widest text-[#6E667E] ${collapsed ? 'lg:hidden' : ''}`}>
+            <span className={`text-[11px] font-semibold uppercase tracking-widest text-fg-subtle ${collapsed ? 'lg:hidden' : ''}`}>
               Admin Panel
             </span>
           </div>
@@ -97,12 +100,12 @@ export default function AdminSidebar({ collapsed, onToggle, userRole, userPermis
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer group
                     ${collapsed ? 'lg:justify-center lg:px-2' : ''}
                     ${active
-                      ? 'bg-[#FF6A1A]/10 text-[#FF7A22] border border-[#FF6A1A]/20'
-                      : 'text-[#8B8FA3] hover:text-white hover:bg-[#1A1A2E]/40 border border-transparent'
+                      ? 'bg-cta-soft text-cta-bg-active border border-cta-soft'
+                      : 'text-fg-muted hover:text-fg hover:bg-surface border border-transparent'
                     }
                   `}
                 >
-                  <div className={`w-5 h-5 flex items-center justify-center flex-shrink-0 ${active ? 'text-[#FF7A22]' : ''}`}>
+                  <div className={`w-5 h-5 flex items-center justify-center flex-shrink-0 ${active ? 'text-cta-bg-active' : ''}`}>
                     <i className={`${item.icon} text-lg`}></i>
                   </div>
                   {!collapsed && (
@@ -114,15 +117,18 @@ export default function AdminSidebar({ collapsed, onToggle, userRole, userPermis
           </nav>
 
           {/* Bottom section */}
-          <div className={`p-4 border-t border-[#1A1A2E]/40 ${collapsed ? 'lg:p-3' : ''}`}>
+          <div className={`p-4 border-t border-card-border ${collapsed ? 'lg:p-3' : ''}`}>
             <div className={`flex items-center gap-2.5 ${collapsed ? 'lg:justify-center' : ''}`}>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#6C4DFF] to-[#7B61FF] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                style={{ backgroundImage: 'var(--grad-brand)' }}
+              >
                 {initialsFromEmail(admin?.email)}
               </div>
               {!collapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#F6F2EA] truncate">{admin?.email ?? '—'}</p>
-                  <p className="text-[11px] text-[#34D07F]">{userRole}</p>
+                  <p className="text-sm font-medium text-fg truncate">{admin?.email ?? '—'}</p>
+                  <p className="text-[11px] text-success">{userRole}</p>
                 </div>
               )}
             </div>

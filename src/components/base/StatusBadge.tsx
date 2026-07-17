@@ -3,42 +3,47 @@ interface StatusBadgeProps {
   size?: 'sm' | 'md';
 }
 
+// Colors: `success`/`danger`/`warning` are the frontend's real semantic
+// tokens (see src/index.css); `warning` and its `-soft` tint are this app's
+// own addition since the frontend has no pending/low-data moderation state.
+// "Detected" maps to `accent` (violet) — closer to the frontend's actual
+// brand accent than a generic info-blue for a "special/flagged" highlight.
 const statusStyles: Record<string, { bg: string; text: string; border: string; dot: string }> = {
   Healthy: {
-    bg: 'bg-[#34D07F]/10',
-    text: 'text-[#34D07F]',
-    border: 'border-[#34D07F]/20',
-    dot: 'bg-[#34D07F]',
+    bg: 'bg-success-soft',
+    text: 'text-success',
+    border: 'border-success-soft',
+    dot: 'bg-success',
   },
   'Low Data': {
-    bg: 'bg-[#FF8A3D]/10',
-    text: 'text-[#FF8A3D]',
-    border: 'border-[#FF8A3D]/20',
-    dot: 'bg-[#FF8A3D]',
+    bg: 'bg-warning-soft',
+    text: 'text-warning',
+    border: 'border-warning-soft',
+    dot: 'bg-warning',
   },
   Success: {
-    bg: 'bg-[#34D07F]/10',
-    text: 'text-[#34D07F]',
-    border: 'border-[#34D07F]/20',
-    dot: 'bg-[#34D07F]',
+    bg: 'bg-success-soft',
+    text: 'text-success',
+    border: 'border-success-soft',
+    dot: 'bg-success',
   },
   Pending: {
-    bg: 'bg-[#FF8A3D]/10',
-    text: 'text-[#FF8A3D]',
-    border: 'border-[#FF8A3D]/20',
-    dot: 'bg-[#FF8A3D]',
+    bg: 'bg-warning-soft',
+    text: 'text-warning',
+    border: 'border-warning-soft',
+    dot: 'bg-warning',
   },
   Failed: {
-    bg: 'bg-[#FF5B5B]/10',
-    text: 'text-[#FF5B5B]',
-    border: 'border-[#FF5B5B]/20',
-    dot: 'bg-[#FF5B5B]',
+    bg: 'bg-danger-soft',
+    text: 'text-danger',
+    border: 'border-danger-soft',
+    dot: 'bg-danger',
   },
   Detected: {
-    bg: 'bg-[#6C4DFF]/10',
-    text: 'text-[#6C4DFF]',
-    border: 'border-[#6C4DFF]/20',
-    dot: 'bg-[#6C4DFF]',
+    bg: 'bg-accent-soft',
+    text: 'text-accent',
+    border: 'border-accent-soft',
+    dot: 'bg-accent',
   },
 };
 
